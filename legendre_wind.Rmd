@@ -1,0 +1,109 @@
+---
+title: "Murujuga Wind Data Analysis"
+output: distill::distill_article
+bibliography: enderbywind.bib
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(patchwork)
+library(leaflet)
+library(viridis)
+theme_set(theme_minimal())
+```
+
+# Background
+
+Murujuga has a hot and persistently dry desert climate [@Meteorology.2011]. There is a warm/dry winter from May-November, and a hot/wet summer from December to March [@DEC.2013]. Summer and winter are the two major wind seasons [@Semeniuk.1987]. In winter, these are easterly to southerly, and in summer strong southwesterly through northwesterly [@Semeniuk.1987].
+
+# Historical data
+
+For this analysis we use BOM data from Legendre Island (BOM ID: 004095). This is at the northwest end of the island (-20.3583, 116.8431) at 29m altitude.
+
+```{r import, include=FALSE}
+wind_raw <- read_csv("data/HC06D_Data_004095_9999999910009138.csv")
+
+wind <- wind_raw %>% 
+  mutate(date = make_datetime(
+    year = as.numeric(Year),
+    month = as.numeric(Month),
+    day = as.numeric(Day),
+    hour = as.numeric(Hour),
+    min = as.numeric(`Minute in Local Standard Time`),
+    tz = "Australia/Perth" 
+  )) %>% select(date,
+                "speed" = `Wind speed measured in km/h`, 'speed_q' = `Quality of wind speed`,
+                'dir' = `Wind direction measured in degrees`, 'dir_q' = `Quality of wind direction`) %>% 
+  filter(!is.na(date))
+```
+
+```{r map, echo=FALSE, fig.height=4, fig.width=7}
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addMarkers(lng=116.8431, lat=-20.3583, label="Legendre Island (BOM ID: 004095)") %>% 
+  setView(116.8431, -20.51, zoom = 10)
+```
+
+It has `r nrow(wind)` observations between `r first(wind$date)` and `r last(wind$date)`. Only data before October 2010 is quality controlled, but prior to that there are very few suspect measures. There are substantial gaps in 2018 and 2020. We have not filtered the data in the subsequent analysis.
+
+```{r data_quality, echo=FALSE, fig.height=1, fig.width=7, message=FALSE, warning=FALSE}
+ggplot(wind) + geom_point(aes(date, speed, colour = speed_q), alpha=0.1, size=1)
+```
+
+# Seasonality
+
+## General trends
+```{r wind_rose, echo=FALSE, fig.height=3.5, fig.width=13, message=FALSE, warning=FALSE, layout="l-screen"}
+wind %>%
+  filter(hour(date) %in% c(9,15)) %>%  
+  mutate(bin = cut(speed, 
+                   breaks=c(0, 10, 20, 30, 40, Inf), 
+                   labels=c("0-10","10-20","20-30", '30-40', '40+')),
+         hour = case_when(
+           hour(date) == 9 ~ '9am',
+           hour(date) == 15 ~ '3pm'
+         )) %>% 
+  ggplot(aes(dir)) + geom_histogram(aes(fill=bin), binwidth=30, position = position_stack(reverse = TRUE)) +
+  coord_polar(start = -22.5/2*pi/180) +
+  scale_x_continuous(name = "", limits = c(0 - 22.5/2, 360 - 22.5/2), 
+                       breaks = seq(0, 360 - 45, by = 45),
+                       minor_breaks = NULL,
+                       labels = c("N", "NE", "E", "SE",
+                                  "S", "SW", "W", "NW")) + 
+  labs(fill="Speed (km/h)", y=NULL) +
+  scale_y_continuous(breaks = c(200,400)) +
+  facet_grid(cols = vars(month(date, label=TRUE)),
+             rows = vars(fct_relevel(hour,'9am','3pm'))) +
+  scale_fill_viridis(discrete=TRUE) +
+  theme(legend.position="top", text = element_text(size=8)) + guides(fill = guide_legend(nrow = 1))
+```
+
+
+## 2017 example
+
+The last set of continuous yearly data is from 2017. Here the wind seasons can be observed clearly. 
+
+```{r year_summary, echo=FALSE, fig.height=12, fig.width=11, layout="l-body-outset", message=FALSE, warning=FALSE}
+tidywind2017 <- wind %>% 
+  filter(year(date) == 2017) %>% 
+  mutate(day = mday(date),
+         month = month(date, label = TRUE),
+         speed = speed)
+
+month(tidywind2017$date) <- 1
+c <- 3/5
+
+  ggplot(tidywind2017) +
+  geom_segment(aes(x = date,
+                   y = 0,
+                   xend = date - c*(lubridate::dhours(speed * 1 * -cos((90-dir) / 360 * 2 * pi))),
+                   yend = (speed * sin((90-dir) / 360 * 2 * pi)),
+  )) +
+  facet_grid(row = vars(month)) +
+  theme_minimal() + labs(x=NULL, y=NULL,
+                         title = "2017 3-hourly wind speed (km/h), and direction (true °) for Legendre Island") +
+  coord_fixed(3600*c) + scale_x_datetime(date_breaks = "2 day", date_labels = "%d",
+                                         expand=c(0,0), limits = c(ymd_h(2017010101),ymd_h(2017013123))) +
+    scale_y_continuous(breaks = c(-20,0,20))
+```

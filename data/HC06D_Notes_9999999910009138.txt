@@ -1,0 +1,248 @@
+NOTES FOR HC06D COMPLETED ON 10/08/2021
+
+DATA FILE DETAILS
+
+
+
+Byte Location, Byte Size, Explanation
+--------------------------------------------------------------------------------------------
+
+
+1-2           , 2           , Bureau record identifier - hc
+4-9           , 6           , Bureau of Meteorology Station Number.
+11-26         , 16          , Year month day hour minute in YYYY,MM,DD,HH24,MI format in Local Standard Time
+28-32         , 5           , Wind speed measured in km/h
+34            , 1           , Quality of wind speed
+36-40         , 5           , Wind direction measured in degrees
+42            , 1           , Quality of wind direction
+44            , 1           , # symbol, end of record indicator.
+
+
+
+
+PARAMETER NOTES
+---------------
+
+
+
+
+WIND
+
+Wind speed and direction are typically an average over the 10 minutes prior to the observation time. Measurements are made 
+using an automatic anemometer, usually at a height of approximately 10 metres above the surface. At stations without an 
+automatic anemometer, a weather observer usually uses a hand held anemometer or ventimeter, or uses the Beaufort scale to 
+estimate wind speed 
+http://www.bom.gov.au/lam/glossary/beaufort.shtml.
+
+Wind speed is usually measured by the anemometer in whole knots, but archived in SI units of m/s 
+to 1 decimal point (0.1 m/s). 1m/s = 1.94kn = 3.6km/h approximately.
+Wind direction can be output as either degrees (true) or 16 points of the compass.
+
+When the wind speed is zero, the wind direction is also zero (i.e. calm conditions).
+
+The Bureau's wind measurements are designed to satisfy weather and climate monitoring needs.
+
+The Bureau's current uncertainty tolerances for automatic wind speed measurements are +/- 5% of the wind 
+speed for wind speeds greater than or equal to 10 m/s and +/- 0.3 m/s for wind speeds below 10 m/s.
+
+As equipment is modernised at observing stations, the Bureau's continuous improvement requirement 
+is to ensure that no change in equipment or algorithm results in wind speed measurements with a 
+higher uncertainty, and where possible decreases uncertainty.
+
+In 2010, with the incorporation of new monitoring equipment with improved algorithms to convert raw 
+outputs into wind speed, a step change downwards in the wind speed measurements has occurred of the 
+order of 0.5 m/s at some stations. Investigations have not lead to any evidence that the wind speed 
+measurements using the Telvent Automatic Weather Station are outside the Bureau's uncertainty tolerance. 
+We are confident that the new measurements provide a better estimate of the true wind speed, and may 
+ultimately result in revised and improved uncertainty tolerances for Bureau wind speed measurements of 
+both the past and future. We are now investigating ways to apply this knowledge to the past wind record.
+
+
+
+
+
+GENERAL NOTES
+-------------
+
+
+
+
+TIME
+
+UTC - Coordinated Universal Time (sometimes called Greenwich Mean Time or GMT).
+
+Local Standard Time - The globe is divided into Standard time zones and Local Standard Time is the time specified for 
+each zone. This is usually done in terms of hours ahead or behind UTC.
+
+Local Time - the time according to the local clock. Normally this is the same as Local Standard Time, but during 
+Daylight Saving in eastern states an hour is added to the local clock in Australia, making Local Time an hour ahead of 
+Local Standard Time.
+When Daylight Saving begins the clock moves forward an hour at 2:00 am to 3:00 am. Synoptic observations continue 
+according to the local clock.
+When Daylight Saving ends the clock moves back an hour at 3:00 am to 2:00 am. Synoptic observations continue according to the local clock.
+
+Care needs to be taken if analysing data against Local Time due to Daylight Saving, as a 9 am observation during 
+Daylight Saving is really an 8 am observation in Local Standard Time. For elements such as temperature the difference 
+can be significant, as the temperature at this time of day is often rising quickly.
+
+Daylight Saving has been used in many Australian states since 1973, and on limited occasions prior to this. The changeovers 
+generally occur in October and March, but exact dates vary from State to State and year to year. More information can be found 
+at: http://www.bom.gov.au/climate/averages/tables/daysavtm.shtml
+
+Please note that synoptic observations are made to a local time schedule in Australia, but to a UTC schedule at Antarctic 
+Stations. Some Antarctic stations adhere to Daylight Savings and others do not. They also do not always adhere to the Local 
+Standard Time applicable to their longitude.
+
+
+
+
+
+QUALITY FLAG DESCRIPTIONS
+
+Y: quality controlled and acceptable
+N: not quality controlled
+W: quality controlled and considered wrong
+S: quality controlled and considered suspect
+I: quality controlled and inconsistent with other known information
+
+
+
+
+LATITUDES AND LONGITUDES
+
+Latitudes and longitudes are given to 4 decimal places, but in many cases will not be accurate to 
+4 decimal places. This is because in the early days the positions of stations were estimated from 
+maps. Gradually the network of open stations is being checked (and if necessary corrected) using 
+GPS (Global Positioning System). The method used is given in the station details file.
+
+
+
+
+WMO INDEX NUMBER
+
+This is the number assigned to a station that makes international weather reports. The number is not 
+actively used in the climate archive, and only a few hundred such numbers are assigned at any time. 
+These are not perpetual but may be reassigned where a station no longer makes the international reports 
+(synops); thus a particular number cannot be regarded as unique and exclusive to any particular station.
+
+
+
+
+PERCENTAGE INFORMATION
+
+No percentage completeness of data is available for this product (HC06D). Percentages are only given for 
+quality flags.
+An "*" is used if the percentage of values with a particular quality flag is non-zero and less than 0.5%.
+
+
+
+
+GAPS AND MISSING DATA
+
+Very few stations have a complete unbroken record of climate information. A station 
+may have been closed, reopened, upgraded to a full weather station or downgraded 
+to a rainfall only station during its existence causing breaks in the record for 
+some or all elements. Some gaps may be for one element due to a damaged instrument 
+or infrastructure outages and others may be for all elements due to the absence or 
+illness of an observer.
+
+
+
+
+INSTUMENTS AND OBSERVATIONAL PRACTICES
+
+Historically a nearby station (within about 1 mile in earlier days) may have used the same 
+station number. There may have been changes in instrumentation and/or observing practices 
+over the period included in a dataset, which may have an effect on the long-term record.
+In recent years many stations have had observers replaced by Automatic Weather Stations, 
+either completely or at certain times of the day.
+
+
+
+
+ROUNDING
+
+The primary way of sending weather information around the world is via a coded message known as a SYNOP. 
+In earlier years, the message only allowed some measurements to be sent as rounded values. At staffed 
+stations, many of these values were subsequently typed in with greater precision (normally to one decimal 
+place a few months later once manuscript records were sent in). If consecutive values all have a zero in 
+the decimal place, then it is almost certain that rounding was used earlier.
+The introduction of a new message format addressed this issue in the latter part of the record.
+
+
+
+
+COPYRIGHT
+
+The copyright for any data is held in the Commonwealth of Australia and the purchaser 
+shall give acknowledgement of the source in reference to the data.  Please refer to the 
+relevant Agreement and Schedule provided with this data for the terms of use of this data. 
+Further enquiries should be sent to climatedata@bom.gov.au
+
+
+
+
+LIABILITY
+
+While every effort is made to supply the best data available this may not be possible
+in all cases.  We do not give any warranty, nor accept any liability in relation 
+to the information given, except that liability (if any), that is required by law.
+
+
+
+
+
+IF DATA IS NOT AS REQUESTED
+
+If the data provided are not as requested, the data will be repeated at no extra cost, 
+provided that:
+
+a) the Bureau is notified within 60 days,
+
+b) the data is returned to the Bureau for checking, and 
+
+c) there has been a fault or error in providing the data.
+
+
+Where there has been no fault or error of provision, the cost involved in
+requested corrective action such as resending the data or providing alternative
+stations will be charged for as necessary.
+
+
+
+
+
+STATION DETAILS FILE
+
+The Station Details file, identified by 'StnDet' in the file name, contains the details for 
+the stations provided. If the station is now closed, the details are those which applied when 
+the station was closed. Many stations have been moved, downgraded, upgraded etc. over the years.
+
+Byte Location, Byte Size, Explanation
+--------------------------------------------------------------------------------------------
+
+
+1-2, 2, Bureau record identifier - st
+4-9, 6, Bureau of Meteorology Station Number.
+11-14, 4, Rainfall district code
+16-55, 40, Station Name.
+57-63, 7, Month/Year site opened. (MM/YYYY)
+65-71, 7, Month/Year site closed. (MM/YYYY)
+73-80, 8, Latitude to 4 decimal places, in decimal degrees
+82-90, 9, Longitude to 4 decimal places, in decimal degrees
+92-106, 15, Method by which latitude/longitude was derived
+108-110, 3, State
+112-117, 6, Height of station above mean sea level in metres
+119-124, 6, Height of barometer above mean sea level in metres
+126-130, 5, WMO (World Meteorological Organisation) Index Number
+132-135, 4, First year of data supplied in data file
+137-140, 4, Last year of data supplied in data file
+142-144, 3, Percentage complete between first and last records
+146-148, 3, Percentage of values with quality flag 'Y'
+150-152, 3, Percentage of values with quality flag 'N'
+154-156, 3, Percentage of values with quality flag 'W'
+158-160, 3, Percentage of values with quality flag 'S'
+162-164, 3, Percentage of values with quality flag 'I'
+166, 1, # symbol, end of record indicator
+
+
