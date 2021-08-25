@@ -1,8 +1,6 @@
 library(shiny)
 library(tidyverse)
 library(lubridate)
-library(leaflet)
-library(viridis)
 theme_set(theme_minimal())
 
 ui <- fluidPage(

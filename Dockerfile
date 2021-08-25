@@ -6,5 +6,3 @@ RUN apt-get update && apt-get install -y \
 
 COPY murujuga_wind_shiny.R /srv/shiny-server/murujuga_weather/
 COPY data /srv/shiny-server/murujuga_weather/data
-
-CMD ["/usr/bin/shiny-server"]
