@@ -1,3 +1,4 @@
+#This will deploy to DigitalOcean App Platform, using port 3838
 FROM rocker/shiny-verse:latest
 
 RUN apt-get update && apt-get install -y \
