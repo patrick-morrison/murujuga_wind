@@ -55,8 +55,10 @@ server <- function(input, output) {
 
 
     output$plot <- renderPlot({
-      year <- input$year
       
+      req(input$year)
+      
+      year <- input$year
       
       tidywind <- wind %>% 
         filter(year(date) == year) %>% 
