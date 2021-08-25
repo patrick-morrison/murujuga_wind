@@ -81,12 +81,12 @@ server <- function(input, output) {
                          yend = (speed * sin((90-dir) / 360 * 2 * pi)),
                          colour=(dir<45|dir>325),
         )) +
-        geom_bar(data = tidyrain, aes(x = mhour,y=rain/10), stat='identity', fill='navyblue', alpha=0.7) +
+        geom_bar(data = tidyrain, aes(x = mhour,y=rain/3), stat='identity', fill='navyblue', alpha=0.7) +
         coord_fixed(c) +
         scale_x_continuous(breaks = (0:30)*24-1, labels = 1:31, minor_breaks=NULL) +
         facet_grid(row = vars(month)) + labs(x=NULL,
                                              title = paste0(year," 3-hourly wind speed (km/h), and direction (true °) for Legendre Island")) +
-        scale_y_continuous(name = 'Wind (km/h)', breaks = c(0,20),  sec.axis = sec_axis( trans=~.*2, name="Rainfall (mm)", breaks =c(0,50))) +
+        scale_y_continuous(name = 'Wind (km/h)', breaks = c(0,20),  sec.axis = sec_axis( trans=~.*3, name="Rainfall (mm)", breaks =c(0,50))) +
         scale_colour_manual(values=c('black', 'red')) +
         theme(legend.position = "none")
       
