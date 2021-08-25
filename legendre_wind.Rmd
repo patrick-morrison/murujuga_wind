@@ -118,3 +118,27 @@ ggplot(tidywind) +
   scale_y_continuous(breaks = c(-20,0,20)) + scale_colour_manual(values=c('black', 'red')) +
   theme(legend.position = "none")
 ```
+
+# Rainfall
+
+```{r}
+rain_raw <- read_csv("data/IDCJAC0009_005061_1800_Data.csv")
+rain <- rain_raw %>%  
+  mutate(date = make_date(
+    year = as.numeric(Year),
+    month = as.numeric(Month),
+    day = as.numeric(Day)
+  )) %>% 
+  select(date, 'rain' = `Rainfall amount (millimetres)`/`Period over which rainfall was measured (days)`)
+```
+
+```{r fig.height=12, fig.width=11}
+tidyrain <- rain %>% 
+  filter(year(date) == 2015) %>% 
+  mutate(day = day(date),
+         month = month(date, label = TRUE),
+         day= mday(date))
+
+ggplot(tidyrain, aes(day, rain)) + geom_bar(stat='identity', fill='skyblue') + facet_grid(row = vars(month))
+```
+
