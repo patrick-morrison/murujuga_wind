@@ -7,7 +7,7 @@ theme_set(theme_minimal())
 
 ui <- fluidPage(
 
-    titlePanel("Murujuga Wind Data"),
+    titlePanel("Murujuga Weather Data"),
 
     sidebarLayout(
         sidebarPanel(
@@ -129,7 +129,16 @@ server <- function(input, output) {
       options <- c(0,3,6,9,12,15,18,21)
       utc_round <- (which.min(abs(options - hour(date_utc())))-1)*3
       
-      sat <- "HIM-8"
+      mts1 <- interval(ymd_h("2005-10-01-00"), ymd_h("2010-06-20-23"))
+      mts2 <- interval(ymd_h("2010-07-01-00"), ymd_h("2015-07-06-23"))
+      him8 <- interval(ymd_h("2015-07-07-00"), ymd_h("2021-09-01-00"))
+      
+      sat <- case_when(
+          date_utc() %within% mts1 ~ "MTS-1",
+          date_utc() %within% mts2 ~ "MTS-2",
+          date_utc() %within% him8 ~ "HIM-8",
+        )
+      
       band <- input$band
     
       url <- sprintf('https://www.ncdc.noaa.gov/gibbs/image/%s/%s/%04d-%02d-%02d-%02d', sat, band, year(date_utc()), month(date_utc()), day(date_utc()), utc_round)
