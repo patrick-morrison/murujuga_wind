@@ -9,11 +9,14 @@ ui <- fluidPage(
 
     sidebarLayout(
         sidebarPanel(
+          p("Visualisation of BOM wind data from Legendre Island (BOM ID: 004095), and rain data from Karratha Aero."),
+          p("Clicking the graph will show BOM synoptic charts (since 2000), and satellite imagery (since 2005)."),
           uiOutput('years_available'),
           verbatimTextOutput("info"),
           htmlOutput("synoptic"),
           selectInput('band', 'Band', c('VS', "IR", "WB", 'RG'), selected ="IR"),
-          htmlOutput(('satellite'))
+          htmlOutput(('satellite')),
+          p("If BOM charts are not showing, this may be because Chrome blocks HTTP requests (as opposed to secure HTTPS, which is not yet supported by BOM). Try Safari or Firefox, or enable mixed or 'insecure' content in the site settings."),
         ),
 
         mainPanel(
