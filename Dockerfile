@@ -1,4 +1,4 @@
-FROM rocker/shiny:latest
+FROM rocker/shiny-verse:latest
 
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
     libxml2-dev \
@@ -17,10 +17,5 @@ RUN apt-get update && \
 
 COPY murujuga_wind_shiny.R /srv/shiny-server/murujuga_weather/
 COPY data /srv/shiny-server/murujuga_weather/data
-
-WORKDIR /srv/shiny-server/murujuga_weather/
-COPY renv.lock renv.lock
-RUN R -e "install.packages('renv')"
-RUN R -e 'renv::restore()'
 
 CMD ["/usr/bin/shiny-server"]
