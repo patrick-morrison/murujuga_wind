@@ -134,7 +134,7 @@ rain <- rain_raw %>%
 
 ```{r fig.height=12, fig.width=11}
 tidyrain <- rain %>% 
-  filter(year(date) == 2015) %>% 
+  filter(year(date) == 2017) %>% 
   mutate(day = day(date),
          month = month(date, label = TRUE),
          day= mday(date))
