@@ -14,7 +14,11 @@ ui <- fluidPage(
       htmlOutput("synoptic"),
       selectInput("band", "Band", c("VS", "IR", "WB", "RG"), selected = "IR"),
       htmlOutput(("satellite")),
-      p("If BOM charts are not showing, this may be because Chrome blocks HTTP requests (as opposed to secure HTTPS, which is not yet supported by BOM). Try Safari or Firefox, or enable mixed or 'insecure' content in the site settings."),
+      p("If BOM charts are not showing, this may be because Chrome blocks HTTP requests\
+        (as opposed to secure HTTPS, which is not yet supported by BOM). Try Safari or Firefox, or",
+        a(href = 'https://experienceleague.adobe.com/docs/target/using/experiences/vec/troubleshoot-composer/mixed-content.html?lang=en',
+        "enable mixed or 'insecure' content in the site settings.)")
+        )
     ),
     mainPanel(
       plotOutput("plot", height = "1200px", click = "plot_click")
